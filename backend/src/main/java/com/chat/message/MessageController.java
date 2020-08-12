@@ -11,6 +11,7 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
@@ -21,12 +22,13 @@ public class MessageController {
 
 	@GetMapping("/messages")
 	public List<Message> getMessages(
-			@RequestParam(value = "cutoffId", required = false)
-			Long cutoffId
+			@RequestParam(value = "cutoffId", required = false) Long cutoffId,
+			@RequestParam(value = "limit", required = false, defaultValue = "30") Integer limit
 	) {
-		return cutoffId != null ?
+		return (cutoffId != null ?
 				messageRepository.findByIdGreaterThan(cutoffId)
-				: messageRepository.findAll();
+				: messageRepository.findAll()
+		).stream().limit(limit).collect(Collectors.toList());
 	}
 
 	@PostMapping("/messages")
