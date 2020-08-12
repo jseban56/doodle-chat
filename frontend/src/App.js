@@ -3,6 +3,47 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [],
+      cutoffId: null
+    }
+    this.fetchNewMessages = this.fetchNewMessages.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchMessages();
+  }
+
+  fetchMessages() {
+    fetch('http://localhost:8080/messages')
+      .then(response => response.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          this.setState({
+            messages: data,
+            cutoffId: data[data.length - 1].id
+          });
+        }
+      })
+      .then(setInterval(this.fetchNewMessages, 5000));
+  }
+
+  fetchNewMessages() {
+    fetch(`http://localhost:8080/messages?cutoffId=${this.state.cutoffId}`)
+    .then(response => response.json())
+    .then((data) => {
+      if (data && data.length > 0) {
+        this.setState({
+          messages: this.state.messages.concat(data),
+          cutoffId: data[data.length - 1].id
+        });
+      }
+    });
+  }
+
   render() {
     return (
       <div className="App">
