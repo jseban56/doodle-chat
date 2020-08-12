@@ -9,7 +9,7 @@ class App extends Component {
     this.fetchFrequencyMs = 1000;
     this.state = {
       messages: [],
-      cutoffId: -1
+      cutoffId: 0
     }
     this.fetchMessages = this.fetchMessages.bind(this);
     this.fetchNewMessages = this.fetchNewMessages.bind(this);
