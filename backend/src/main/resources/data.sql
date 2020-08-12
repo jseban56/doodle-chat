@@ -1,8 +1,8 @@
-insert into course(id, username,description)
-values(10001, 'in28minutes', 'Learn JPA');
+insert into message(id, author, text)
+values(1, "dummy-user", "test message one");
 
-insert into course(id, username,description)
-values(10002, 'in28minutes', 'Learn Data JPA');
+insert into message(id, author, text)
+values(2, "dummy-user", "test message two");
 
-insert into course(id, username,description)
-values(10003, 'in28minutes', 'Learn Microservices');
+insert into message(id, author, text)
+values(3, "dummy-user", "test message three");
