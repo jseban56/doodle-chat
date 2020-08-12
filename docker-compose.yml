@@ -1,0 +1,39 @@
+version: '3'
+services:
+
+  database:
+    image: "postgres:9.6-alpine"
+    container_name: chat-database
+    volumes:
+      - chat-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=chat-app
+      - POSTGRES_USER=chat
+      - POSTGRES_PASSWORD=chat-db-password
+
+  backend:
+    build: ./backend
+    container_name: chat-backend
+    environment:
+      - DB_SERVER=chat-database
+      - POSTGRES_DB=chat-app
+      - POSTGRES_USER=chat
+      - POSTGRES_PASSWORD=chat-db-password
+    ports:
+      - 8080:8080
+    links:
+      - database
+
+  frontend:
+    build: ./frontend
+    container_name: chat-frontend
+    ports:
+      - 4200:80
+    links:
+      - backend
+
+
+volumes:
+  chat-data:
