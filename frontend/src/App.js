@@ -6,10 +6,12 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.fetchFrequencyMs = 1000;
     this.state = {
       messages: [],
       cutoffId: -1
     }
+    this.fetchMessages = this.fetchMessages.bind(this);
     this.fetchNewMessages = this.fetchNewMessages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -31,7 +33,7 @@ class App extends Component {
           });
         }
       })
-      .then(setInterval(this.fetchNewMessages, 5000));
+      .then(setInterval(this.fetchNewMessages, this.fetchFrequencyMs));
   }
 
   fetchNewMessages() {
