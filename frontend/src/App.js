@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       messages: [],
-      cutoffId: null
+      cutoffId: -1
     }
     this.fetchNewMessages = this.fetchNewMessages.bind(this);
   }
