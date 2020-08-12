@@ -11,6 +11,8 @@ class App extends Component {
       cutoffId: -1
     }
     this.fetchNewMessages = this.fetchNewMessages.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   componentDidMount() {
@@ -44,23 +46,46 @@ class App extends Component {
     });
   }
 
+  renderMessage(message) {
+    return (
+      <li key={message.id} className="message">
+        <div className="author">{message.author || 'anonymous'}</div>
+        <div className="text">{message.text}</div>
+        <div className="timestamp">{new Date(message.created).toGMTString()}</div>
+      </li>
+    );
+  }
+
+  handleChange(event) {
+    this.setState({ message: event.target.value });
+  }
+
+  sendMessage() {
+    fetch('http://localhost:8080/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ "text": this.state.message })
+    }).then(() => this.setState({ message: '' }));
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="chat-window">
+          <div>
+            <ul className="message-list">
+              {this.state.messages.map(this.renderMessage)}
+            </ul>
+          </div>
+          <div>
+            <input className="message-input" type="text" value={this.state.message} onChange={this.handleChange} />
+            <button onClick={this.sendMessage}>
+              Send
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
