@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 @RestController
 public class MessageController {
 
-	@Autowired
-	private MessageRepository messageRepository;
+    @Autowired
+    private MessageRepository messageRepository;
 
-	@GetMapping("/messages")
-	public List<Message> getMessages(
-			@RequestParam(value = "cutoffId", required = false) Long cutoffId,
-			@RequestParam(value = "limit", required = false, defaultValue = "30") Integer limit
-	) {
-		return (cutoffId != null ?
-				messageRepository.findByIdGreaterThan(cutoffId)
-				: messageRepository.findAll()
-		).stream().limit(limit).collect(Collectors.toList());
-	}
+    @GetMapping("/messages")
+    public List<Message> getMessages(
+            @RequestParam(value = "cutoffId", required = false) Long cutoffId,
+            @RequestParam(value = "limit", required = false, defaultValue = "30") Integer limit
+    ) {
+        return (cutoffId != null ?
+                messageRepository.findByIdGreaterThan(cutoffId)
+                : messageRepository.findAll()
+        ).stream().limit(limit).collect(Collectors.toList());
+    }
 
-	@PostMapping("/messages")
-	public ResponseEntity<Void> createMessage(@RequestBody Message message) {
-		messageRepository.save(message);
-		return ResponseEntity.ok().build();
-	}
+    @PostMapping("/messages")
+    public ResponseEntity<Void> createMessage(@RequestBody Message message) {
+        messageRepository.save(message);
+        return ResponseEntity.ok().build();
+    }
 
 }
